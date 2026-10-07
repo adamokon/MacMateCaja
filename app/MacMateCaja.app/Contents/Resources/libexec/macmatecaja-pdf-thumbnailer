@@ -1,0 +1,37 @@
+#!/bin/bash
+set -euo pipefail
+
+if [ "$#" -ne 3 ]; then
+  echo "usage: macmatecaja-pdf-thumbnailer URI OUTPUT SIZE" >&2
+  exit 64
+fi
+
+input_uri="$1"
+output_file="$2"
+requested_size="$3"
+
+case "$requested_size" in
+  ''|*[!0-9]*) exit 64 ;;
+esac
+
+if [ "$requested_size" -lt 32 ]; then
+  requested_size=32
+elif [ "$requested_size" -gt 1024 ]; then
+  requested_size=1024
+fi
+
+thumbnail_root="$(mktemp -d "${TMPDIR:-/tmp}/macmatecaja-pdf-thumbnail.XXXXXX")"
+trap 'find "$thumbnail_root" -depth -delete 2>/dev/null || true' EXIT HUP INT TERM
+
+local_pdf="$thumbnail_root/source.pdf"
+gio copy "$input_uri" "$local_pdf" >/dev/null
+
+/usr/bin/qlmanage -t -s "$requested_size" -o "$thumbnail_root" "$local_pdf" >/dev/null 2>&1
+generated_png="$local_pdf.png"
+
+if [ ! -s "$generated_png" ]; then
+  echo "Quick Look did not produce a PDF thumbnail" >&2
+  exit 1
+fi
+
+/bin/cp "$generated_png" "$output_file"

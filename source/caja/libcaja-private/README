@@ -1,0 +1,7 @@
+README for caja/libcaja-private
+
+This library, libcaja-private, is totally private to caja.
+
+If you are writing a caja component, you should not use this
+library or link with it.  The code in here is internal to caja
+and not available for public consumption.

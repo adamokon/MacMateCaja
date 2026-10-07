@@ -1,0 +1,78 @@
+#!/bin/bash
+set -euo pipefail
+
+CONTENTS_DIR="$(cd "$(dirname "$0")/.." && pwd)"
+PROJECT_ROOT="$(cd "$CONTENTS_DIR/../../.." && pwd)"
+QUARTZ_PREFIX="${MACMATECAJA_QUARTZ_PREFIX:-$PROJECT_ROOT/prefix/quartz}"
+GVFS_PREFIX="${MACMATECAJA_GVFS_PREFIX:-$PROJECT_ROOT/runtime/gvfs}"
+HOMEBREW_PREFIX="${MACMATECAJA_HOMEBREW_PREFIX:-/opt/homebrew}"
+if [ ! -d "$HOMEBREW_PREFIX" ]; then HOMEBREW_PREFIX=/usr/local; fi
+MACMATECAJA_TEMP_ROOT="${TMPDIR:-/tmp}/MacMateCaja"
+MACMATECAJA_GVFS_CACHE="/tmp/MacMateCaja-gvfs-${UID:-$(id -u)}"
+MACMATECAJA_RESOURCE_DATA="$CONTENTS_DIR/Resources/share"
+
+umask 077
+mkdir -p "$MACMATECAJA_TEMP_ROOT" "$MACMATECAJA_GVFS_CACHE"
+for private_dir in "$MACMATECAJA_TEMP_ROOT" "$MACMATECAJA_GVFS_CACHE"; do
+  if [ -L "$private_dir" ] || [ ! -O "$private_dir" ]; then
+    echo "MacMateCaja: unsafe cache directory" >&2
+    exit 1
+  fi
+  chmod 700 "$private_dir"
+done
+if [ ! -x "$QUARTZ_PREFIX/bin/caja" ]; then
+  echo "MacMateCaja: build the Quartz runtime or set MACMATECAJA_QUARTZ_PREFIX" >&2
+  exit 1
+fi
+
+export PATH="$CONTENTS_DIR/Resources/libexec:$QUARTZ_PREFIX/bin:$GVFS_PREFIX/bin:$HOMEBREW_PREFIX/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export XDG_DATA_DIRS="$MACMATECAJA_RESOURCE_DATA:$QUARTZ_PREFIX/share:$GVFS_PREFIX/share:$HOMEBREW_PREFIX/share:/usr/local/share:/usr/share"
+export XDG_CONFIG_DIRS="$QUARTZ_PREFIX/etc/xdg:$GVFS_PREFIX/etc/xdg:$HOMEBREW_PREFIX/etc/xdg:/etc/xdg"
+# OpenSSH limits Unix-domain socket paths to 103 bytes. macOS $TMPDIR is long,
+# and GVfs appends gvfsd-sftp/<40-character hash> to XDG_CACHE_HOME for its
+# ControlPath. Keep this cache in a deliberately short, disposable /tmp path.
+export XDG_CACHE_HOME="$MACMATECAJA_GVFS_CACHE"
+export GSETTINGS_SCHEMA_DIR="$QUARTZ_PREFIX/share/glib-2.0/schemas"
+export GIO_EXTRA_MODULES="$GVFS_PREFIX/lib/gio/modules:$HOMEBREW_PREFIX/lib/gio/modules"
+export GIO_USE_VFS="${GIO_USE_VFS:-gvfs}"
+export GTK_PATH="$QUARTZ_PREFIX/lib/gtk-3.0:$GVFS_PREFIX/lib/gtk-3.0:$HOMEBREW_PREFIX/lib/gtk-3.0"
+export GDK_BACKEND="quartz"
+export GTK_THEME="${GTK_THEME:-Adwaita:dark}"
+export GTK_USE_PORTAL="0"
+export NO_AT_BRIDGE="1"
+export DYLD_FALLBACK_LIBRARY_PATH="$QUARTZ_PREFIX/lib:$GVFS_PREFIX/lib:$HOMEBREW_PREFIX/lib:${DYLD_FALLBACK_LIBRARY_PATH:-}"
+
+if [ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ]; then
+  if command -v dbus-run-session >/dev/null 2>&1; then
+    session_dir="$(mktemp -d "$MACMATECAJA_TEMP_ROOT/session.XXXXXX")"
+    DBUS_CONFIG="$session_dir/bus.conf"
+    cleanup_session() { /bin/rm -f "$DBUS_CONFIG"; /bin/rmdir "$session_dir"; }
+    trap cleanup_session EXIT
+    xml_escape() { printf '%s' "$1" | /usr/bin/sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g'; }
+    {
+      printf '<busconfig><type>session</type><keep_umask/><listen>unix:tmpdir=/tmp</listen><auth>EXTERNAL</auth>\n'
+      printf '<servicedir>%s</servicedir>\n' "$(xml_escape "$QUARTZ_PREFIX/share/dbus-1/services")"
+      printf '<servicedir>%s</servicedir>\n' "$(xml_escape "$GVFS_PREFIX/share/dbus-1/services")"
+      printf '<standard_session_servicedirs/><policy context="default"><allow send_destination="*" eavesdrop="true"/><allow eavesdrop="true"/><allow own="*"/></policy>\n'
+      printf '<limit name="service_start_timeout">120000</limit></busconfig>\n'
+    } > "$DBUS_CONFIG"
+    dbus-run-session --config-file="$DBUS_CONFIG" -- "$0" "$@"
+    exit $?
+  fi
+  echo "MacMateCaja: dbus-run-session is required for remote locations" >&2
+  exit 1
+fi
+
+args=()
+for arg in "$@"; do
+  case "$arg" in
+    -psn_*) ;;
+    *) args+=("$arg") ;;
+  esac
+done
+
+# Defaults come from the C configuration module; explicit CLI paths win.
+if [ "${#args[@]}" -eq 0 ]; then
+  exec "$QUARTZ_PREFIX/bin/caja" --browser --no-desktop
+fi
+exec "$QUARTZ_PREFIX/bin/caja" --browser --no-desktop "${args[@]}"

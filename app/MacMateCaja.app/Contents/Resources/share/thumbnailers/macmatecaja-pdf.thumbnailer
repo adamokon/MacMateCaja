@@ -1,0 +1,4 @@
+[Thumbnailer Entry]
+TryExec=macmatecaja-pdf-thumbnailer
+Exec=macmatecaja-pdf-thumbnailer %u %o %s
+MimeType=application/pdf;application/x-pdf;

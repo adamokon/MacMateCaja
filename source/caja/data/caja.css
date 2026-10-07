@@ -1,0 +1,255 @@
+/*
+ * MacMateCaja's cmux-inspired application theme.
+ *
+ * cmux on this Mac uses a compact, neutral dark interface and Iosevka Cmux
+ * Diagnostic at 12 pt.  Keep all colours here rather than depending on the
+ * user's desktop GTK theme: MacMateCaja is a self-contained Quartz application.
+ */
+
+@define-color macmatecaja_bg #171717;
+@define-color macmatecaja_surface #1f1f1f;
+@define-color macmatecaja_surface_raised #292929;
+@define-color macmatecaja_hover #303030;
+@define-color macmatecaja_border #3a3a3a;
+@define-color macmatecaja_fg #d8d8d8;
+@define-color macmatecaja_muted #969696;
+@define-color macmatecaja_accent #4f9cf9;
+@define-color macmatecaja_accent_hover #68aafc;
+
+.caja-navigation-window,
+.caja-navigation-window > grid {
+    background-color: @macmatecaja_bg;
+    color: @macmatecaja_fg;
+    font-family: "Iosevka Cmux Diagnostic", monospace;
+    font-size: 13pt;
+}
+
+.caja-navigation-window menubar,
+.caja-navigation-window toolbar,
+.caja-navigation-window .toolbar,
+.caja-navigation-window .primary-toolbar,
+.caja-navigation-window statusbar {
+    background-color: @macmatecaja_surface;
+    background-image: none;
+    color: @macmatecaja_fg;
+    border-color: @macmatecaja_border;
+    box-shadow: none;
+}
+
+.caja-navigation-window menubar {
+    padding: 2px 6px;
+}
+
+.caja-navigation-window menuitem {
+    color: @macmatecaja_fg;
+}
+
+.caja-navigation-window menuitem:hover {
+    background-color: @macmatecaja_hover;
+    background-image: none;
+}
+
+menu,
+menuitem,
+tooltip {
+    background-color: @macmatecaja_surface_raised;
+    background-image: none;
+    color: @macmatecaja_fg;
+    border-color: @macmatecaja_border;
+    font-family: "Iosevka Cmux Diagnostic", monospace;
+    font-size: 13pt;
+}
+
+.caja-navigation-window button {
+    min-height: 22px;
+    min-width: 22px;
+    padding: 3px 7px;
+    color: @macmatecaja_fg;
+    background-color: @macmatecaja_surface_raised;
+    background-image: none;
+    border: 1px solid @macmatecaja_border;
+    border-radius: 5px;
+    box-shadow: none;
+}
+
+.caja-navigation-window button:hover {
+    background-color: @macmatecaja_hover;
+    border-color: #505050;
+}
+
+.caja-navigation-window button:active,
+.caja-navigation-window button:checked {
+    background-color: #383838;
+    border-color: @macmatecaja_accent;
+}
+
+.caja-navigation-window entry {
+    min-height: 24px;
+    padding: 2px 7px;
+    color: @macmatecaja_fg;
+    caret-color: @macmatecaja_fg;
+    background-color: #202020;
+    background-image: none;
+    border: 1px solid @macmatecaja_border;
+    border-radius: 5px;
+    box-shadow: none;
+}
+
+.caja-navigation-window entry:focus {
+    border-color: @macmatecaja_accent;
+    box-shadow: 0 0 0 1px alpha(@macmatecaja_accent, 0.22);
+}
+
+.caja-navigation-window .view,
+.caja-navigation-window iconview,
+.caja-navigation-window treeview {
+    color: @macmatecaja_fg;
+    background-color: @macmatecaja_bg;
+    background-image: none;
+}
+
+.caja-navigation-window .view:selected,
+.caja-navigation-window iconview:selected,
+.caja-navigation-window treeview:selected {
+    color: #ffffff;
+    background-color: @macmatecaja_accent;
+}
+
+.caja-navigation-window treeview header button {
+    color: @macmatecaja_muted;
+    background-color: @macmatecaja_surface;
+    background-image: none;
+    border-width: 0 1px 1px 0;
+    border-color: @macmatecaja_border;
+    border-radius: 0;
+    font-size: 12pt;
+}
+
+.caja-navigation-window scrolledwindow,
+.caja-navigation-window viewport,
+.caja-navigation-window notebook,
+.caja-navigation-window notebook > stack {
+    background-color: @macmatecaja_bg;
+    border-color: @macmatecaja_border;
+}
+
+.caja-navigation-window notebook > header {
+    background-color: @macmatecaja_surface;
+    border-color: @macmatecaja_border;
+}
+
+.caja-navigation-window notebook tab {
+    padding: 4px 10px;
+    color: @macmatecaja_muted;
+    background-color: @macmatecaja_surface;
+    background-image: none;
+}
+
+.caja-navigation-window notebook tab:checked {
+    color: @macmatecaja_fg;
+    background-color: @macmatecaja_surface_raised;
+    box-shadow: inset 0 -2px @macmatecaja_accent;
+}
+
+.caja-navigation-window paned > separator {
+    min-width: 1px;
+    min-height: 1px;
+    background-color: @macmatecaja_border;
+    background-image: none;
+}
+
+.caja-navigation-window scrollbar {
+    background-color: @macmatecaja_bg;
+}
+
+.caja-navigation-window scrollbar slider {
+    min-width: 8px;
+    min-height: 36px;
+    background-color: #515151;
+    border: 2px solid @macmatecaja_bg;
+    border-radius: 999px;
+}
+
+.caja-navigation-window scrollbar slider:hover {
+    background-color: #686868;
+}
+
+.caja-navigation-window statusbar {
+    color: @macmatecaja_muted;
+    font-size: 12pt;
+}
+
+.caja-navigation-window .ai-copy-button {
+    min-width: 26px;
+    min-height: 20px;
+    padding: 1px 6px;
+    color: #ffffff;
+    background-color: #3b78c5;
+    border-color: @macmatecaja_accent;
+    border-radius: 4px;
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+.caja-navigation-window .ai-copy-button:hover {
+    background-color: @macmatecaja_accent;
+    border-color: @macmatecaja_accent_hover;
+}
+
+.caja-navigation-window .ai-copy-button:disabled {
+    color: #777777;
+    background-color: #292929;
+    border-color: @macmatecaja_border;
+}
+
+.caja-navigation-window .ai-copy-button.copied {
+    background-color: #25384b;
+    border-color: #4f789d;
+}
+
+.caja-navigation-window .ai-copy-button.copied .ai-copy-base {
+    color: #68829b;
+    text-shadow: 1px 1px #101820;
+}
+
+.caja-navigation-window .ai-copy-button .ai-copy-check {
+    color: #8ee6b0;
+    text-shadow: 0 1px #10251a;
+    font-size: 13pt;
+    font-weight: bold;
+}
+
+.caja-canvas-item {
+    border-radius: 4px;
+}
+
+/* EelEditableLabel (icon labels) */
+.caja-desktop.view .entry,
+.caja-desktop.view .entry:focus,
+.caja-desktop.view .entry:backdrop,
+.caja-navigation-window .view .entry,
+.caja-navigation-window .view .entry:active,
+.caja-navigation-window .view .entry:focus,
+.caja-navigation-window .view .entry:backdrop {
+    border-image: none;
+    border-style: solid;
+    border-width: 1px;
+    border-color: @macmatecaja_accent;
+    border-radius: 4px;
+    color: @macmatecaja_fg;
+    text-shadow: none;
+    background-color: @macmatecaja_surface_raised;
+    background-image: none;
+}
+
+.caja-desktop.view .entry:selected,
+.caja-desktop.view .entry:focus:selected,
+.caja-desktop.view .entry:backdrop:selected,
+.caja-navigation-window .view .entry:active,
+.caja-navigation-window .view .entry:selected,
+.caja-navigation-window .view .entry:focus:selected,
+.caja-navigation-window .view .entry:backdrop:selected {
+    background-color: @macmatecaja_accent;
+    color: #ffffff;
+    text-shadow: none;
+}

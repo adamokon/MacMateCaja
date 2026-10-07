@@ -1,0 +1,818 @@
+### caja 1.28.0
+
+  * Translation update
+  * Wl bgleaks fixes (#1763)
+  * wayland-background-dialog: fix two issues found by cppcheck
+  * wayland-background-dialog: ensure style provider is added only once
+  * eel-background: fix logic error in x11/wayland detection
+  * wayland-background-dialog: Preview images at original aspect ratio
+  * wayland-background-dialog: fix memory leaks
+  * wayland background dialog: fix build warning
+  * Make wayland background dialog more intuitive
+  * Manage desktop backgrounds when running in wayland
+  * wayland desktop: suppress spatial window warning
+  * Do not show "Organize Desktop by Name" when desktop icons are locked
+  * fix building with libxml 2.12.0
+
+### caja 1.27.2
+
+  * fix gfile sort and symlink warnings w glib2.76 or later
+
+### caja 1.27.1
+
+  * update translations
+  * wayland: initial support for showing the desktop
+  * ensure all of the desktop is usable in x11
+  * Replace deprecated code from xrandr fix
+  * caja-desktop-window: Fix the xrandr error
+  * caja-icon-container.c: Set a transient parent on the interactive search popup
+  * Initial wayland support
+  * caja-file: fix future informal date bug
+  * caja-file: fix yesterday/today informal date bug
+  * directory: Include hidden files in properties window
+  * Fix handling of invalid x-special/mate-icon-list drops
+  * icon view: Fix positioning overflowing icons on the desktop
+  * Make CajaIconData type less confusing
+  * Remove dead assignment
+  * Remove unused members and structures
+  * Remove unused member
+  * Enable showing in Budgie Desktop and XFCE
+  * icon view: Refresh icon positions for manual layout on zoom change (#1676)
+
+### caja 1.27.0
+
+  * update translations
+  * tx: update resource
+  * tx: migrate config file
+  * image properties: Look for supported mime types at runtime
+  * caja-extensions: print filename when caja failed to open keys file
+  * caja-bookmark: 'caja_bookmark_get_uri (CajaBookmark *)' may return NULL
+  * configure.ac: Bump Autoconf version because of LT_INIT
+  * image properties: Improve the layout
+  * Fix build warning -Wmissing-field-initializers
+  * Fix build warning -Wbad-function-cast
+  * Document and fix default-sort-order preference
+  * caja-file-conflict-dialog: Move to automatic signal disconnection
+  * caja-file-conflict-dialog: Properly release references on dispose()
+  * caja-file-conflict-dialog: update the icons once
+  * build: Cleanup long deprecated macros usage
+  * Properly initialize IconKey::scale
+  * caja-bookmark: Fix build warning -Wlogical-not-parentheses
+  * caja-application: Variable is assigned a value that is never used
+  * caja-bookmark: fix memory leak
+  * caja-bookmark: drop create_image_cairo_for_bookmark
+  * Fix implicit conversion changes signedness: 'gboolean' to 'guint'
+  * Fix some -Wsign-compare warnings
+  * caja-file-operations: overlapping comparisons always evaluate to true
+  * remove '-' from a m4_define
+  * CI: Drop -Wunused-parameter for debian build
+  * eel-editable-label: remove unused method get_font_description
+  * eel-editable-label: drop eel_editable_label_clear_layout
+  * caja-property-browser: 'gdk_color_parse' is deprecated
+  * caja-property-browser: Fix build warning -Wconstant-conversion
+  * caja-module: fix memory leak
+  * caja-sidebar-title: fix memory leak
+  * fm-directory-view: fix memory leak
+  * eel-background: fix memory leak
+  * caja-application: avoid SEGV when profiling/debugging code
+  * Use gresources for ui files
+  * caja-mime-actions: fix memory leak
+  * Remove whitespaces before #define, #if, and #endif
+  * Use a blank line at most
+  * caja-file: Remove unreachable code
+  * caja-places-sidebar: fix right-click menu height
+  * caja-dnd: wrong type field in printf format string
+  * Fix Caja does not show icons of application launchers
+
+### caja 1.26.0
+
+  * update translations
+  * Update copyright to 2021
+
+### caja 1.25.3
+
+  * update translations
+  * caja-directory.c: Fix memory leak.
+  * caja-bookmarks-window.ui: expand child widgets, sane default size
+  * caja-bookmarks-window.ui: remove deprecated GtkAlignment, remove empty labels
+  * caja-file-management-properties.ui: remove deprecated GtkAlignment (use
+  * update resource for transifex
+  * travis: disable travis builds for ubuntu
+  * Add creation time support
+  * caja-window: remove -Wcast-function-type warning
+  * caja-window-menus: remove -Wcast-function-type warning
+  * caja-window-manage-views: remove -Wcast-function-type warning
+  * caja-property-browser: remove -Wcast-function-type warning
+  * icon view: Add a directory setting to block moving icons
+  * Improved filesystem check on dnd
+  * No longer need to check the locale.h header as it's part of C90
+  * warning: missing initializer for a field of ‘GtkActionEntry’
+  * caja-places-sidebar: gnome-disk-utility ignores the --xid option
+  * keep one .desktop suffix on desktop file renaming
+  * caja-pathbar: Fix cppcheck warning nullPointerRedundantCheck
+  * caja-application: Use PACKAGE in notify_init instead of GETTEXT_PACKAGE
+  * cppcheck warning: Local variable 'combo_box' shadows outer argument
+  * Rename wallpaper pattern name from MATE to GNOME
+  * caja-window: Fix cppcheck warning unusedAllocatedMemory
+  * caja-file-management-properties: Do not cast the instance to GObject when connecting a signal
+  * caja-file-management-properties: use gtk_builder_new_from_file
+  * Fix warnings about xmlChar cast
+  * caja-customization-data: keep the key of the hash table if exists
+  * caja-customization-data: Do not build the path to the browser.xml file
+  * caja-directory-async: drop istr_set_insert, use g_hash_table_add instead
+  * build: allow users to disable gettext support (--disable-nls)
+  * build: Use PACKAGE_URL variable
+  * build: underline package name and version in configure summary
+  * build: set GETTEXT_PACKAGE=AC_PACKAGE_NAME
+
+### caja 1.25.2
+
+  * update translations
+  * build: fix dist target
+  * i18n: Fix fetching all keywords on desktop files
+  * Fix desktop file validation warning
+  * caja-places-sidebar: upgrade format drive item
+  * Update copyright to 2021
+
+### caja 1.25.1
+
+  * update translations
+  * Remove warning -Wtype-limits
+  * caja-bookmarks-window: upgrade ui file
+  * caja-file-operations: Let user mark trusted launcher
+  * caja-directory-async: trust marked launchers
+  * gio set PATH "metadata::caja-trusted-launcher" true
+  * caja-directory-async: trust also launchers from user desktop
+  * caja-directory-async: trust only system launchers
+  * caja-file-management-properties: use g_list_free_full
+  * caja-icon-container: warning -Wold-style-declaration
+  * file-operations: don't attempt to move into the source dir
+  * test-eel-pixbuf-scale: Profile only the scaling functions just once
+  * Remove the use of the gettimeofday function
+  * test-eel-image-table: Fix the filename for the test image
+  * test-eel-image-table: Use the UTF-8 encoding for the file itself
+  * test-eel-labeled-image: Fix showing the image on the controls
+  * fm-properties-window: make the location of system folders portable
+  * Remove unused macros
+  * Duplicate tabs using the scroll wheel
+  * middle-clicking the reload button duplicates tab
+  * Fix i18n in backgrounds and emblems dialog
+  * fix distcheck error on archlinux and fedora
+  * use pango-devel as BR for fedora
+  * fm-directory-view: Error message when a link could not be created
+  * travis: use ubuntu:rolling tag to fix building
+  * eel-editable-label: Consecutive break/return statements are unnecessary
+  * tx: fix build error with Hebrew language
+  * Travis CI: debian build: add -Wunused-macros to CFLAGS
+  * Remove trailing spaces/tabs
+  * caja-dnd: Create links by default on dnd from Web Browsers
+  * Add a "Bookmarks" sidebar to Caja
+  * Guard block is missing
+  * caja-notebook: Add notebook scroll event
+  * fm-icon-view: totem-audio-preview was removed in totem 2.25.90
+  * caja-file-management-properties: Reduce the height of the dialog
+  * Remove unused variable from eel_notebook_scroll_event_cb
+  * fm-properties-window: Do not display Modified field for mounted points
+  * add required libraries for libegg
+  * caja properties-window: display dir last modified
+  * Travis CI: enable irc notifications with tagged commits
+  * update submodule
+
+### caja 1.25.0
+
+  * update translations
+  * Add informations about translation contribution
+  * caja-window-slot: fix window icon replacement/alternation
+  * fm-properties: Don't show notebook arrows
+  * caja-file-management-properties: Remove caja_file_management_properties_size_group_create
+  * caja-file-management-properties.ui: Fix deprecations
+  * Replace GtkStateType (GTK2 enum) with GtkStateFlags (GTK3 enum)
+  * caja-file: remove warning GTimeVal is deprecated
+  * update README
+  * mate-submodules: use git submodule for libegg
+  * Remove the warning: the address of ‘iter’ will never be NULL
+  * support an explicit --select command line option
+  * tx: pull slowak translation from server
+  * build: silent build warnings for distcheck
+  * Fix -Wmissing-prototypes build warnings
+  * Remove warnings about function declaration isn’t a prototype
+  * caja-window-menus: website-label, consistency with other about-dialog
+  * use MATE_COMPILE_WARNINGS from mate-common
+  * fix runtime warning from newly unused code
+  * Confirm before deleting during an undo operation
+  * Updating the link of caja
+  * Update authors
+  * Look for caja extensions at $CAJA_EXTENSION_DIRS
+
+### caja 1.24.0
+
+  * update translations
+  * Set a real title on the desktop window (as provided to ATK)
+  * Drop GLIB version check
+  * build: show compiler flags on configuration summary
+  * Fix build using gcc 10 -fno-common flag
+
+### caja 1.23.4
+
+  * build: fix wrong executing dir in caja.desktop
+
+### caja 1.23.3
+
+  * update translations
+  * fm-properties: Remove use of mate-desktop-thumbnail helper
+  * Update copyright to 2020
+  * Make device ejection notifications translatable
+  * Keep path same when opening new window from an existing one
+  * editable-label: Don't hyphenate filenames
+  * libcaja-private/caja-file: redundant condition
+  * avoid redundant redeclarations
+  * canvas-item: Don't hyphenate filenames
+  * change name from caja.{its,loc} to mimeinfo.{its,loc}
+  * caja-extensions: allows the translation of copyright
+  * caja-window-slot: "folder-saved-search" icon instead "text-x-generic"
+  * Let some strings be translatable
+  * add document for CajaWidgetViewProvider api
+  * add new interface
+  * add CajaWidgetViewProvider docs
+  * add new extension for widget view
+  * hide menu and toolbutton when view is only one
+  * Set FmWidgetView is single view.
+  * add new FmWidgetView object
+  * fix build error about autoptr clean
+  * Don't export translation for Icon keyword in desktop files
+  * desktop files: Add comments for translators
+  * Fix a grammar mistake reported by translators
+  * Remove comments that are not written to translators from pot file
+  * Use absolute path of binary on desktop files
+
+### caja 1.23.2
+
+  * update translations
+  * caja-progress-info: use NotifyNotification instead of GNotification
+  * Copy file and keep timestamps of original file including remotes
+  * Fix Caja crashes on file move in Korean
+  * Support querying files by contained text
+  * use show icons option in views tab
+  * Add preference option to hide icons in list view.
+  * fm-directory-view: add icon to "empty trash" into "File" menu
+  * gla11y: use version 0.3 which already defaults to using python3
+  * caja-places-sidebar: add icon to "empty trash"
+  * spatial-window: replace geprecated gtk_menu_popup
+  * property-browser: replace deprecated gtk_drag_begin
+  * fm-list-view: replace deprecated gtk_drag_begin
+  * Show thumbnails in list view
+  * file-manager: reduce the scope of some variables
+  * preferences: Render extension icons as cairo_surfaces
+  * preferences: Render media icons as cairo_surface
+  * Replace gdkpixbuf with cairo_surfaces in a few more places
+  * sidebar: Render info icon as vector
+  * desktop: Add specific CSS for ContrastHigh and ContrastHighInverse
+  * desktop: Add specific CSS for HighContrast and HighContrastInverse
+  * Add support for loading theme-specific caja-desktop CSS
+  * Refactor custom CSS loading into a separate function
+  * Add support for checking .ui accessibility with gla11y
+  * Render file-conflict icons as cairo_surface vectors
+  * file-conflict-dialog: don't scale icons twice on hidpi monitors
+  * eel-string: Fix 'make check'
+  * Restore transparent background on icon view labels
+  * desktop icon view: disconnect callback from correct GSettings instance
+  * Add scroll tabs with mouse wheel for File's properties and caja's preferences windows
+  * hidpi: ensure all icons are properly scaled
+  * use GETTEXTDATADIRS replace GETTEXTDATADIR
+  * create msgstr for data/browser.xml
+  * add gettext its
+  * migrate intltool to gettext
+
+### caja 1.23.1
+
+  * desktop: Force no borders on desktop items by default
+  * desktop: Always draw the items label frame
+  * [ci] debian build: show all the warnings of deprecated functions
+  * suppress GtkAction deprecations warnings
+  * update translations
+  * Remove trailing whitespaces
+  * src: reduce the scope of some variables
+  * caja-open-with-dialog: cppcheck: Redundant condition
+  * eel-canvas: cppcheck: Local variable 'allocation' shadows outer variable
+  * Change URL prefixes from http to https
+  * Change url projet's website
+  * caja-progress-info: add tooltips to file transfer dialog
+  * Add accessible names for buttons in file transfer operations dialog
+  * libegg: reduce the scope of some variables
+  * [ci] Add cppcheck html report
+  * libcaja-private: reduce the scope of some variables
+  * eel: remove date & time functions
+  * caja-spatial-window: Unused variable i
+  * eel: reduce the scope of some variables
+  * caja-location-dialog: Fix 'cppcheck' and 'clang' warnings
+
+### caja 1.23.0
+
+  * update translations
+  * caja-property-browser: Fix cast from non-struct type to struct type
+  * eggsmclient-xsmp: Fix cast from non-struct type to struct type
+  * caja-file-utilities: Fix cast from non-struct type to struct type
+  * local #include files who are libraries inside <> instead ""
+  * eel-string: Use 'va_copy' instead of 'G_VA_COPY'
+  * eel-editable-label: Use 'memmove' instead of 'memcpy'
+  * eel: remove eel_g_object_list_ref
+  * drop functions defined but not used
+  * local #include files inside "" instead <>
+  * caja-icon-canvas-item: avoid 'cppcheck' warning
+  * caja-file: avoid shifting signed 32-bit value by 31 bits
+  * Fix invocation with --geometry from the command line
+  * caja-icon-canvas-item: initialize variable 'scale'
+  * Pass "NULL" for keyboard event
+  * caja-application: avoid NULL inside 'g_object_unref'
+  * fm-desktop-icon-view: remove dead code
+  * caja-file-operations: make sure 'error' isn't NULL
+  * caja-open-with-dialog: make sure there is error before showing it
+  * eel-string: Fix: 'memcpy' overflows destination buffer
+  * eel-string: avoid 'memcpy' with NULL argument
+  * caja-progress-info: make sure argument is initialized
+  * eel: replace eel_ref_str with GRefString
+  * eel: remove g_object_list_copy
+  * caja-sidebar-title: avoid 'NULL' inside 'setup_gc_with_fg'
+  * caja-file: Fix incomplete file replacement dialog
+  * caja-autorun: avoid NULL in 'memcpy'
+  * eel-editable-label: call argument with initialized value
+  * caja-file: Fix: true and false branches are identical
+  * caja-file-operations: add comment with false positive warning:
+  * [ci] use clang analyzer
+  * configure.ac: fix portability issue with test
+  * eel: remove g_str_list_copy
+  * Remove USE_MATE2_MACROS from autogen.sh (legacy)
+  * eel: remove g_list_free_deep_custom
+  * avoid variables set but not used
+  * eel-canvas: Fix warning: Undefined or garbage value returned to caller
+  * caja-window: Fix garbage value
+  * eel-gdk-pixbuf-extensions: Fix division by zero
+  * caja-file: Fix use of memory after it is freed
+  * caja-icon-container: Fix use of memory after it is freed
+  * Fix attempt to free released memory
+  * fm-tree-model: Fix use of memory after it is freed
+  * caja-information-panel: Fix use of memory after it is freed
+  * fm-directory-view: Fix use of memory after it is freed
+  * caja-tree-view-drag-dest: Fix memory leak
+  * [Security] eel-string: Use 'g_strlcat' instead of 'strcat'
+  * [Security] Use 'g_strlcpy' instead of 'strcpy'
+  * drop unused variables
+
+### caja 1.22.0
+
+  * update translations
+  * Add update-authors.pl script which helps to update caja.about
+  * Read authors and documenters fom caja.about file
+  * Ensure proper translation of the about dialog title
+  * Update authors
+  * Update Documenters
+  * Add --disable-self-check for configure
+
+### caja 1.21.4
+
+  * update translations
+  * Avoid deprecated g_type_class_add_private under src
+  * Fix incompatible pointer types
+  * Avoid deprecated g_type_class_add_private under src
+  * Avoid deprecated g_type_class_add_private under libcaja-private
+  * Enable Travis CI
+  * Fix compile warning
+  * Let file size units follow the users preference
+  * Fixed the value of 6 month and 1 year.
+  * Support querying files by modification time and size
+  * Avoid deprecated g_type_class_add_private
+  * Update copyright to 2019
+  * CajaApplication: avoid deprecated 'g_type_class_add_private'
+  * caja-menu: avoid deprecated 'g_type_class_add_private'
+  * [eel][libegg] Use G_DEFINE_TYPE_WITH_PRIVATE macro
+  * configure.ac: Add check for PKG_CONFIG being set.
+  * caja-application: Check for smclient before trying to load session
+  * [eel] Avoid deprecated g_type_class_add_private
+  * [libegg] Avoid deprecated g_type_class_add_private
+  * [libcaja-private] Re-check file MIME type before picking an application.
+  * [file-manager] Fix apparent bug in context menu updating code.
+  * Revert "fm-directory-view.c:  Decrease minimum update interval."
+  * Fix: weird item in bookmarks if the folder was removed
+  * Minor code-quality enhancements
+  * Forgot to initialize is_backup field
+  * Change show/hide backup files shortcut
+  * Remove useless comments, correct description string
+  * Skip hidden files only, not backups
+  * Add independent show/hide backup files
+  * deleting unused nautilus icon
+  * caja-progress-info: new behavior with notifications:
+  * caja-progress-info: show notifications with the gsettings key:
+  * move appdata to metainfo directory
+  * disable deprecation warnings for distcheck
+  * caja-places-sidebar: replace two other uses of g_drive_poll_for_media_finish
+  * Fix segfault on stopping USB hard drives
+  * caja-bookmark: Fix memory leak
+  * fm-properties-window: Fix memory leaks
+  * caja-desktop-link-monitor: Fix memory leak
+  * eel-gtk-extensions: Fix memory leaks
+
+### caja 1.21.3
+
+  * GSettings should init beforce use it
+  * update translations
+  * Fix case-insensitive comparison in running_in_mate
+  * monitor: fix crash on unmounting remote filesystems
+  * CajaFile: fix crash in modify_link_hash_table
+  * connect-server-dialog: Respect password save setting
+  * properties-window: fix checking inconsistent state
+  * monitor: watch for removal of non-native mounts on GVolumeMonitor
+  * Add 'Configurable' interface and add support to caja-file-management-properties
+  * caja-application.c: Remove redundant empty lines
+  * Update caja manpage with info about "--force-desktop" option
+  * Caja-icon-info: Optimize icon lookups by GIcon.
+  * fm-directory-view.c:  Decrease minimum update interval.
+  * Remove dead code, fix a memory leak
+  * add option to open multiple uri in tabs at startup
+  * pathbar: Activate pane when changing location
+  * add the ability to switch tabs using [ctrl+tab] and [ctrl+shift+tab]
+  * caja-window: Fix: mouse doesn't work with [ctrl] + [.] or [ctrl] + [;]
+  * caja-desktop-directory: stop segfaults in directory_ready_callback
+  * caja-directory.c: fix build warning
+  * pathbar: increase reference count of path in update_button_types
+  * Fix some issues found by static analysis
+  * pathbar: Fix crash when accessing drive root
+  * libcaja-private: remove redundant prefs application to hash table
+  * [desktop-bg] Fix memory leak during background change events
+  * caja-location-bar: Fix: change background color based on activity state
+
+### caja 1.21.2
+
+  * update translations
+  * eel-gtk-extensions: show icons in right-click menus only if "menus-have-icons" set
+  * caja-sidebar-title: Fix: images broken in sidebar
+  * caja-progress-info.c: show notifications in begin/end of progress
+  * caja-progress-info.c: avoid deprecated 'gtk_status_icon_get_visible'
+  * caja-sidebar-title: fix [-Wmaybe-uninitialized] warning
+  * desktop window: Add is-desktop AtkObject attribute
+  * caja-desktop-window.c: Fix: caja crashes unexpectedly
+  * avoid deprecated 'gtk_widget_override_font'
+  * avoid deprecated 'gtk_window_set_wmclass'
+  * caja-bookmark.c: drop unused variable
+  * caja-bookmark.c: Fix icons in bookmarks
+  * icon-container: avoid deprecated 'gtk_style_context_get_border_color'
+  * avoid deprecated 'gtk_dialog_get_action_area'
+  * Pathbar button: fix poor response to right-click
+  * editable-label: avoid deprecated 'gtk_im_multicontext_append_menuitems'
+  * zoom-control: use NULL instead of uninitialized variable
+  * remove unused function
+  * use NULL instead of uninitialized variable
+  * eel-editable-label.c: avoid deprecated 'gdk_keymap_get_default'
+  * eel-editable-label: avoid deprecated gtk_style_context_set_background
+  * eel-gtk-extensions: replace deprecated gtk_menu_popup function
+  * zoom-control: don't use eel_pop_up_context_menu function
+  * Replace deprecated gtk_menu_popup
+  * libcaja-private: replace deprecated gdk_error_trap functions
+  * fm-desktop-icon-view: replace deprecated gdk_error_trap_push/pop functions
+  * replace deprecated gdk_flush
+  * libcaja-private: fix -Wlogical-not-parentheses build warning
+  * avoid deprecated 'gtk_style_context_get_background_color'
+
+### caja 1.21.1
+
+  * Translations update
+  * caja-spatial-window.c: avoid deprecated 'gtk_vbox_new'
+  * Eliminate accessible children-changed event flood on container repopulation
+  * Eliminate accessible children-changed event flood during update all
+  * Emit accessible-name-change signal for icons only when icons are renamed
+  * libcaja-private/caja-recent.c: gvfs-open is a deprecated tool, switch to "gio open" from libglib2.0-bin.
+  * sidebar popup menu: show "media-eject" icon in the "unmount" items
+  * pathbar: fix random segfaults on opening mounts from Desktop
+  * fm-icon-view: Show size on disk as sort criterion
+  * sidebar popup menu: show "media-eject" icon
+  * Add sort criterion by reversed extension segments
+  * set icon names instead stock ids in some places
+  * caja-spatial-window.c: avoid deprecated GtkImageMenuItem
+  * Fix warnings from HiDPI commits
+  * sidebar: Respect sidebar dimensions on HiDPI
+  * HiDPI: Convert Pixbufs to Cairo Surfaces
+  * general: use gdk_monitor_get_scale_factor
+  * list-view: use the cairo surface as a drag icon
+  * Scale screen dimensions
+  * icon-info: hash/store icons using scale factor as well as size
+  * file: support HiDpi for thumbnails images
+  * properties-window: support HiDpi for the properties window icon
+  * Support HiDpi icons
+  * canvas-container: listen to scale factor to invalidate icons
+  * canvas-item: use gtk_render_icon_surface for the DnD surface
+  * desktop-canvas-view: scale desktop workarea
+  * caja-side-pane.c: avoid deprecated GtkImageMenuItem
+  * caja-navigation-window-pane.c: avoid deprecated GtkImageMenuItem
+  * caja-navigation-window-menus.c: drop unused variable
+  * caja-navigation-window-menus.c: avoid deprecated GtkImageMenuItem
+  * caja-bookmark: avoid deprecated GtkImageMenuItem
+  * caja-places-sidebar.c: avoid deprecated GtkImageMenuItem
+  * caja-emblem-sidebar.c: avoid deprecated GtkImageMenuItem
+  * fm-tree-view.c: drop unused variable
+  * modify code error: end the statement with a semicolon
+  * fm-tree-view.c: avoid deprecated GtkImageMenuItem
+  * rename 'mate_image_menu_item...' to 'eel_image_menu_item_new_from_icon'
+  * eel-editable-label.c: avoid 'append_action_signal' with stock ids
+
+### caja 1.21.0
+
+  * Translations update
+  * caja-query-editor.c: add #include <eel/eel-stock-dialogs.h>
+  * avoid 'gtk_file_chooser_dialog_new' with stock ids
+  * avoid gtk_dialog_new_with_buttons with stock ids
+  * avoid gtk_dialog_add_buttons with stock ids
+  * caja-file-management-properties.ui: avoid deprecated GtkVBox and GtkHBox
+  * caja-bookmarks-window.ui: avoid deprecated:
+  * rename mate_dialog_add_button to eel_dialog_add_button
+  * use development version
+  * avoid eel_create_question_dialog with stock ids
+  * avoid eel_run_simple_dialog with stock ids
+  * eel-stock-dialogs: avoid gtk_dialog_add_button with stock ids
+  * caja-file-operations: avoid gtk_dialog_add_buttons with stock ids
+  * remove runtime warning in usage of caja_clipboard_set_up_editable
+  * caja-file-conflict-dialog: avoid gtk_dialog_add_buttons with stock id
+  * avoid deprecated GtkButton:use-stock
+  * can selected all the search keywords with Ctrl+a. #918
+  * caja-autorun: avoid gtk_dialog_add_buttons with stock ids
+  * eel-editable-label.c: avoid gtk_image_menu_item_new_from_stock
+  * caja-file-management-properties.ui: avoid stock properties:
+  * Toolbar: find icon: use icon name instead the stock id
+  * caja-bookmarks-window.ui: avoid deprecated GtkButton:use-stock
+  * CAJA_TYPE_NAVIGATION_ACTION: avoid deprecated property "stock_id"
+  * fix backgrounds and emblems dialog content rendering
+  * avoid deprecated GtkStock
+
+### caja 1.20.0
+
+  * Translations update
+  * drop CSS for GTK+ 3.14
+  * require GTK+ 3.22 and GLib 2.50
+  * Fix tasklist icon change when opening new tab
+  * Include local files with "" instead of <>
+  * search_dispose and search_finilize can't be run after search finished
+  * add missing window icon to About dialog for extensions
+  * move libegg to the top srcdir and drop some leftovers
+  * update copyright year to 2018
+  * remove +x attr from source files
+
+### caja 1.19.3
+
+  * Translations update
+  * WidthOfScreen and HeightOfScreen implementation
+  * caja-places-sidebar: fix refusal to unmount when sidebar is wide
+  * caja-places-sidebar: disable overlay scrollbar
+  * Fix: wrong behavior with key "enter" while renaming files in list view
+  * open folder in new window: [ctrl] + [shift] + [w]
+  * zoom-control: change zoom with mousewheel scroll over button
+
+### caja 1.19.2
+
+  * Translations update
+  * View -> Visible Columns: fix vertical expand of dialog content
+  * reword Size on Disk column description a bit
+  * Fix: wrong <Shift+Del> behavior while renaming files
+  * icon-dnd: remove hardcoded highlight frame
+  * Fix: high cpu while loading background image
+  * list view: fix large icon margins on zooming out
+  * Revert "Adds columns autosizing"
+  * make sure scaling the desktop wallpaper works in all monitors
+  * remove weird +x attribute from a source file
+
+### caja 1.19.1
+
+  * Translations update
+  * gtk 3.22: avoid deprecated gdk_screen_get_monitor... functions:
+  * Adds columns autosizing
+  * Refresh all rows on zoom change
+  * Forces widget redraw on zoom
+  * pathbar: enable mousewheel scrolling like it was with GTK+2
+  * libcaja-private: remove wrong link from internal README
+  * private: Ensure we allow launching .desktop files from trusted symlinks
+  * Fix: Scaling the desktop wallpaper doesn't work
+  * open-with-dialog: set max-char-width for a label
+  * Fix "Open With" dialog "Open" button's text misaligned
+  * avoid deprecated gdk_screen_width/height
+  * avoid deprecated gdk_screen_get_width/height
+  * avoid deprecated gdk_screen_make_display_name
+  * libegg: replace deprecated gtk_drag_begin
+  * eggsmclient: fix a build warning because of -Wcomment
+  * don't use deprecated gtk_show_uri
+  * avoid deprecated gdk_screen_get_number
+  * Fix browsing/autorun media on insertion
+  * fix vertical Compact View scrolling in fm_icon_view_scroll_event()
+  * property-browser: add style class frame to scrolledwindows"
+  * Fix off-by-one error in caja-pathbar.c
+  * Restore Polish translation credits from GNOME
+  * added feature: present the size on disk of files as we present the size of the file.
+
+### caja 1.19.0
+
+  * Translations update
+  * restore DBus interface initialization
+  * CSS: Load a different caja-desktop.css with GTK 3.14
+  * Use gtk+-3 bookmarks location
+  * Open With dialog: force icon size
+  * file: make caja_file_get_gicon return custom icons too (#765)
+  * Expand grid width to canvas
+  * update copyright year to 2017
+  * use atk_component_get_extents instead of atk_component_get_position
+  * don't parse .hidden files manually - GIO does it since 2.36
+  * don't check nonexistent MATE22_USER_DIR env var
+  * don't check nonexistent ~/.mate2 directory
+  * eel-accessibility: remove unused code and outdated comments
+  * show correct right-click menu after making selection
+  * eel: Queue resizes on the canvas as elements change visibility
+  * Add size_request to IconContainer to work around unncecessary relayouting
+  * IconCanvasItem: fix overlapping filenames on hover
+  * eel: remove unneeded #include with condition
+  * eel: remove some unused code from eel-gdk-pixbuf-extensions
+  * fix build warning (no const needed there)
+  * fix build with gcc 4.9.2 (looks like it's in c89 mode by default)
+  * search: added tag support (xattr::xdg.tags).
+  * Fix broken rename in list view by selectin file name cell.
+  * property-browser: add style class frame to scrolledwindows
+  * caja-application.c: Fix uninitialized variable
+
+### caja 1.18.0
+
+  * NEWS: use consistent, project wide, markdown-like formatting to make
+    generating release announcements easier
+  * Build: require libmate-desktop >= 1.17.3
+  * Move to GTK+3 (require GTK+ >= 3.14), drop GTK+2 code and --with-gtk
+    build option
+  * Port from libunique to GtkApplication
+  * Implement copy queue and pausing
+  * Add option for asking confirmation before moving files to trash
+  * Add support for back/forward mouse buttons for directory navigation
+  * Add notification when ejected drives are safe to unplug (and require
+    libnotify at build time)
+  * Add --force-desktop command line option to make Caja always manage
+    the desktop
+  * Add ability to get feedback from Orca when additional icons are
+    selected/deselected
+  * Drop metadata converting tool
+  * Fix crossfade issues with recent GTK+ versions
+  * Fix more graphics issues to allow Caja to use background for directory
+    windows
+  * Fix some more GTK+ deprecations and runtime warnings
+  * Schema: some fixes and cleanups
+  * Translations update
+
+### caja 1.16.2
+
+  * List view: show/hide columns instead of appending/removing them
+    (fixes crash when moving between trash and other folder with GTK+3)
+  * Icon view: fix accessibility issues
+  * Icon and compact views: fix moving to next/previous row (or column)
+    with right/left (or down/up) keys
+  * Prefs dialog: fix vertical expand of content with window resize
+  * Show "Open with" menu item and "Open with" tab in properties window
+    for .desktop and .theme files
+  * Fix cursor refresh issues on folder change in single click mode
+  * Fix runtime warnings on window closing and Caja exit
+  * GTK+3: fix mousewheel scrolling in compact view
+  * GTK+3: fix visual issues when renaming files
+  * GTK+3: force X11 backend
+  * Some more fixes and cleanups
+
+### caja 1.16.1
+
+  * Fix regression that sometimes caused visual glitches when selecting
+    icons
+  * GTK+3: some CSS adjustments
+  * GTK+3: fix accessibility on desktop (for Orca)
+  * GTK+3: fix several runtime warnings
+  * Translations update
+
+### caja 1.16.0
+
+  * Use GtkAboutDialog instead of MateAboutDialog
+  * Pathbar: always show right arrow button
+  * Fix changing taskbar icon when switching between tabs with different icons
+  * Fix lots of warnings when building docs for libcaja-extension
+  * GTK+3: add style classes for elements of pathbar
+  * GTK+3: fix drawing and changing of desktop background with 3.21
+  * GTK+3: fix a large amount of deprecations
+  * Some more fixes and cleanups
+  * Translations update
+
+### caja 1.14.2
+
+  * Translations update
+  * Make distcheck use currently selected GTK+ version
+
+### caja 1.14.1
+
+  * prefs dialog: don't crash on toggling "Show hidden and backup files"
+  * GTK+-3 theming: add a CSS file for caja, and initialize it at startup
+  * GTK+3: add style class caja-desktop-window at top level
+  * Translation update
+
+### caja 1.14.0
+
+  * Drop MateConf migration script
+  * Allow closing tabs on middle-click
+  * List Python extensions separately in extensions list
+  * GTK+3: add several style classes to simplify theming
+  * GTK+3: fix desktop flash issue
+  * GTK+3: a lot of deprecation fixes
+  * Some more fixes and cleanups
+  * Translations update
+  * Add Changelog generation
+
+### caja 1.12.7
+
+  * Fix remaining random changes of font color in icon view
+
+### caja 1.12.6
+
+  * Really fix loading multiple python extensions: revert the commit
+  that proved to broke the fix. NOTE: as a side effect, the extensions
+  list will now have duplicate Python entries if more than one Python
+  extension is loaded.
+
+### caja 1.12.5
+
+  * Fix loading multiple python extensions
+  * GTK+3: fix crash on Ctrl + scroll wheel
+
+### caja 1.12.4
+
+  * Fix random crash on startup when python-caja extension is enabled
+  * Fix crash when restoring file with special characters from trash
+  * Fix a few memleaks
+
+### caja 1.12.3
+
+  * Fix wrong text color in icon view with some light themes
+  * Fix crash due to unneeded assert
+
+### caja 1.12.2
+
+  * Set smclient mode to "no restart" when either running as root or on other desktops
+  * Properties -> custom icon dialog: add missing /usr/share/icons to Places
+  * Some more fixes
+
+### caja 1.12.1
+
+  * Assorted bugfixes
+  * Translations update
+
+### caja 1.12.0
+
+  * Connect to server dialog: add support for AFP
+  * Retrieve strings directly from gschema (requires intltool 0.50.1)
+  * Switch to org.gnome.SessionManager for logout/suspend inhibit
+  * Improve multi-monitor support
+  * GTK+3 fixes
+  * Some UI fixes
+
+### caja 1.10.4
+
+  * Fix a crash when using undo following a file deletion.
+
+### caja 1.10.3
+
+  * File properties dialog: bring back missing Notes and Image Properties tabs
+
+### caja 1.10.2
+
+  * Places sidebar: enable both creating bookmarks and dropping files
+  * Compact view: don't auto-scroll to the right on long filenames
+  * Don't manage desktop and exit with last window when either running as root or on other desktops
+  * Fix double-click behavior when clicking on a folder and then on a file/folder inside it
+  * GTK+3 fixes
+  * Translations update
+
+### caja 1.10.1
+
+  * Do not automount USB flash drives and CD/DVD drives while session is locked
+  * Reverted dropping of files to Bookmarks sidebar
+    * See https://github.com/mate-desktop/caja/issues/423
+  * UI bugfixes
+
+### caja 1.10.0
+
+  * Allow extensions to be enabled/disabled at runtime
+  * Bugfixes
+
+### caja 1.8.0
+
+  * Add GTK3 support
+  * Re add bookmark section in connect server dialog
+  * Add option to show file sizes with IEC units instead of SI units
+  * Add "Open parent location" in menu if we are in search view
+
+### caja 1.6.0
+
+  * Replace mateconf with gsettings (much code taken from Nautilus 3.0 patches by Alexander Larsson)
+  * "Show backup files" option merged in "Show hidden files"
+  * Add support for freedesktop.org File Manager DBus Interface (https://www.freedesktop.org/wiki/Specifications/file-manager-interface)
+  * Allow to open files, if passed as arguments
+
+### caja 1.3.0
+
+  * Restore toggle button for button and text-based location bar
+  * Add the ability to open bookmarks in the places side pane via the enter and space keys
+  * Add diff button for text files in file conflict dialog
+  * Fix autocompletion for remote locations
+  * Makes the filename column expand to its maximum instead of shrinking to a hardcoded value
