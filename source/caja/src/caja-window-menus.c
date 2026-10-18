@@ -579,12 +579,18 @@ action_about_caja_callback (GtkAction *action,
     gsize n_authors = 0, n_documenters = 0 , i;
 
     key_file = g_key_file_new ();
-    if (!g_key_file_load_from_file (key_file, CAJA_DATADIR G_DIR_SEPARATOR_S "caja.about", 0, &error))
     {
-        g_warning ("Couldn't load about data: %s\n", error->message);
-        g_error_free (error);
-        g_key_file_free (key_file);
-        return;
+        const char *env_data = g_getenv ("CAJA_DATADIR");
+        char *about_path = g_build_filename (env_data && *env_data ? env_data : CAJA_DATADIR, "caja.about", NULL);
+        gboolean loaded = g_key_file_load_from_file (key_file, about_path, 0, &error);
+        g_free (about_path);
+        if (!loaded)
+        {
+            g_warning ("Couldn't load about data: %s\n", error->message);
+            g_error_free (error);
+            g_key_file_free (key_file);
+            return;
+        }
     }
 
     authors = g_key_file_get_string_list (key_file, ABOUT_GROUP, "Authors", &n_authors, NULL);

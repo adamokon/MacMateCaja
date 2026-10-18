@@ -74,6 +74,16 @@ caja_ui_prepare_merge_ui (GtkUIManager *ui_manager,
 char *
 caja_get_ui_directory (void)
 {
+    const char *env_ui = g_getenv ("CAJA_UIDIR");
+    if (env_ui && *env_ui)
+    {
+        return g_strdup (env_ui);
+    }
+    const char *env_data = g_getenv ("CAJA_DATADIR");
+    if (env_data && *env_data)
+    {
+        return g_build_filename (env_data, "ui", NULL);
+    }
     return g_strdup (DATADIR "/caja/ui");
 }
 
@@ -81,8 +91,11 @@ char *
 caja_ui_file (const char *partial_path)
 {
     char *path;
+    char *ui_dir;
 
-    path = g_build_filename (DATADIR "/caja/ui", partial_path, NULL);
+    ui_dir = caja_get_ui_directory ();
+    path = g_build_filename (ui_dir, partial_path, NULL);
+    g_free (ui_dir);
     if (g_file_test (path, G_FILE_TEST_EXISTS))
     {
         return path;

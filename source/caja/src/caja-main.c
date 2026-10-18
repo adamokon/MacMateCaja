@@ -250,15 +250,33 @@ main (int argc, char *argv[])
 
 #ifdef ENABLE_NLS
 	/* Initialize gettext support */
-	bindtextdomain (GETTEXT_PACKAGE, MATELOCALEDIR);
-	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-	textdomain (GETTEXT_PACKAGE);
+	{
+		const char *env_loc = g_getenv ("MATELOCALEDIR");
+		bindtextdomain (GETTEXT_PACKAGE, env_loc && *env_loc ? env_loc : MATELOCALEDIR);
+		bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+		textdomain (GETTEXT_PACKAGE);
+	}
 #endif /* ENABLE_NLS */
 
 	g_set_prgname ("caja");
 
-	if (g_file_test (DATADIR "/applications/caja.desktop", G_FILE_TEST_EXISTS)) {
-		egg_set_desktop_file (DATADIR "/applications/caja.desktop");
+	{
+		const char *env_shared = g_getenv ("MACMATECAJA_SHARED_DIR");
+		const char *env_data = g_getenv ("CAJA_DATADIR");
+		char *desktop_path = NULL;
+		if (env_shared && *env_shared) {
+			desktop_path = g_build_filename (env_shared, "applications", "caja.desktop", NULL);
+		} else if (env_data && *env_data) {
+			char *parent_dir = g_path_get_dirname (env_data);
+			desktop_path = g_build_filename (parent_dir, "applications", "caja.desktop", NULL);
+			g_free (parent_dir);
+		} else {
+			desktop_path = g_strdup (DATADIR "/applications/caja.desktop");
+		}
+		if (g_file_test (desktop_path, G_FILE_TEST_EXISTS)) {
+			egg_set_desktop_file (desktop_path);
+		}
+		g_free (desktop_path);
 	}
 
 #ifdef HAVE_EXEMPI

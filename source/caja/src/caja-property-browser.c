@@ -640,10 +640,13 @@ caja_property_browser_drag_data_get (GtkWidget *widget,
 
         }
 
-        image_file_name = g_strdup_printf ("%s/%s/%s",
-                                           CAJA_DATADIR,
-                                           is_reset ? "patterns" : property_browser->details->category,
-                                           property_browser->details->dragged_file);
+        {
+            const char *env_data = g_getenv ("CAJA_DATADIR");
+            image_file_name = g_strdup_printf ("%s/%s/%s",
+                                               env_data && *env_data ? env_data : CAJA_DATADIR,
+                                               is_reset ? "patterns" : property_browser->details->category,
+                                               property_browser->details->dragged_file);
+        }
 
         if (!g_file_test (image_file_name, G_FILE_TEST_EXISTS))
         {
@@ -1329,8 +1332,12 @@ add_new_pattern (CajaPropertyBrowser *property_browser)
                             "process-stop", GTK_RESPONSE_CANCEL,
                             "document-open", GTK_RESPONSE_ACCEPT,
                             NULL);
-        gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog),
-                                             DATADIR "/caja/patterns/");
+        {
+            const char *env_data = g_getenv ("CAJA_DATADIR");
+            char *patterns_dir = g_build_filename (env_data && *env_data ? env_data : DATADIR "/caja", "patterns", NULL);
+            gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), patterns_dir);
+            g_free (patterns_dir);
+        }
         filter = gtk_file_filter_new ();
         gtk_file_filter_add_pixbuf_formats (filter);
         gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (dialog), filter);
@@ -1994,7 +2001,12 @@ add_reset_property (CajaPropertyBrowser *property_browser)
 
     reset_chit = NULL;
 
-    reset_image_file_name = g_strdup_printf ("%s/%s/%s", CAJA_DATADIR, "patterns", RESET_IMAGE_NAME);
+    {
+        const char *env_data = g_getenv ("CAJA_DATADIR");
+        reset_image_file_name = g_strdup_printf ("%s/%s/%s",
+                                                env_data && *env_data ? env_data : CAJA_DATADIR,
+                                                "patterns", RESET_IMAGE_NAME);
+    }
     reset_pixbuf = gdk_pixbuf_new_from_file (reset_image_file_name, NULL);
     if (reset_pixbuf != NULL && property_browser->details->property_chit != NULL)
     {

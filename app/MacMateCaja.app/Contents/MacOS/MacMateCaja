@@ -40,6 +40,11 @@ export GDK_BACKEND="quartz"
 export GTK_THEME="${GTK_THEME:-Adwaita:dark}"
 export GTK_USE_PORTAL="0"
 export NO_AT_BRIDGE="1"
+export CAJA_DATADIR="$QUARTZ_PREFIX/share/caja"
+export CAJA_PIXMAPDIR="$QUARTZ_PREFIX/share/pixmaps/caja"
+export CAJA_UIDIR="$QUARTZ_PREFIX/share/caja/ui"
+export MACMATECAJA_SHARED_DIR="$QUARTZ_PREFIX/share"
+export MATELOCALEDIR="$QUARTZ_PREFIX/share/locale"
 export DYLD_FALLBACK_LIBRARY_PATH="$QUARTZ_PREFIX/lib:$GVFS_PREFIX/lib:$HOMEBREW_PREFIX/lib:${DYLD_FALLBACK_LIBRARY_PATH:-}"
 
 if [ -z "${DBUS_SESSION_BUS_ADDRESS:-}" ]; then

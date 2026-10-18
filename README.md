@@ -5,7 +5,8 @@ the file manager of the [MATE Desktop environment](https://mate-desktop.org/)
 on Linux. This port is based on Caja 1.28.0 and runs natively through GTK 3 Quartz.
 It is an independent project, not an official MATE release or endorsement.
 This is a
-source distribution, not a self-contained, signed or notarized binary app.
+source distribution with scripts for a self-contained, ad-hoc-signed macOS installer.
+No Developer ID or Apple notarization is included.
 No XQuartz, Docker or Linux desktop session is required.
 
 Features include dark styling, multiple panes with tmux-inspired shortcuts,
@@ -27,6 +28,17 @@ See [building](docs/BUILDING.md). Run `bash tests/run-config-tests.sh` to test
 configuration independently of the GUI. Run `python3 tests/test-launcher.py`
 to test the launcher with a synthetic runtime (no user file operations).
 Run `python3 tests/test-export.py` for export/privacy regressions.
+
+## Free macOS installer
+
+See [packaging](docs/PACKAGING.md) and the [Polish installation guide](docs/INSTALL-PL.md).
+After building native dependencies, run `bash scripts/build-package.sh` from this
+repository. Local `.app`, unsigned `.pkg`, and `.zip` artifacts go into `dist/`.
+The tested binary target is Apple Silicon on macOS 26+. Run
+`python3 tests/test-packaging.py` to verify a local package using synthetic data.
+Public binary releases remain blocked until complete corresponding sources and
+license material for all bundled dependencies have been collected. The packaging
+source is published now; no binary release is implied.
 
 ## Origins, authors and license
 

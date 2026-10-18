@@ -53,7 +53,12 @@ extension_new (gchar *filename, gboolean state, gboolean python, GObject *module
     ext->module = module;
 
     extension_file = g_key_file_new ();
-    extension_filename = g_strdup_printf(CAJA_DATADIR "/extensions/%s.caja-extension", filename);
+    {
+        const char *env_data = g_getenv ("CAJA_DATADIR");
+        extension_filename = g_strdup_printf ("%s/extensions/%s.caja-extension",
+                                              env_data && *env_data ? env_data : CAJA_DATADIR,
+                                              filename);
+    }
     if (g_key_file_load_from_file (extension_file, extension_filename, G_KEY_FILE_NONE, &error))
     {
         ext->name = g_key_file_get_locale_string (extension_file, CAJA_EXTENSION_GROUP, "Name", NULL, NULL);

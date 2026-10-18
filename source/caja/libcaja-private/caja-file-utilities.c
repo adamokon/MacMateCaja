@@ -811,6 +811,16 @@ caja_get_mounted_mount_for_root (GFile *location)
 char *
 caja_get_pixmap_directory (void)
 {
+    const char *env_pix = g_getenv ("CAJA_PIXMAPDIR");
+    if (env_pix && *env_pix)
+    {
+        return g_strdup (env_pix);
+    }
+    const char *env_data = g_getenv ("CAJA_DATADIR");
+    if (env_data && *env_data)
+    {
+        return g_build_filename (env_data, "pixmaps", "caja", NULL);
+    }
     return g_strdup (DATADIR "/pixmaps/caja");
 }
 
@@ -822,8 +832,11 @@ char *
 caja_pixmap_file (const char *partial_path)
 {
     char *path;
+    char *pix_dir;
 
-    path = g_build_filename (DATADIR "/pixmaps/caja", partial_path, NULL);
+    pix_dir = caja_get_pixmap_directory ();
+    path = g_build_filename (pix_dir, partial_path, NULL);
+    g_free (pix_dir);
     if (g_file_test (path, G_FILE_TEST_EXISTS))
     {
         return path;
@@ -844,6 +857,7 @@ caja_get_data_file_path (const char *partial_path)
 {
     char *path;
     char *user_directory;
+    const char *env_data;
 
     /* first try the user's home directory */
     user_directory = caja_get_user_directory ();
@@ -855,8 +869,9 @@ caja_get_data_file_path (const char *partial_path)
     }
     g_free (path);
 
-    /* next try the shared directory */
-    path = g_build_filename (CAJA_DATADIR, partial_path, NULL);
+    /* next try the runtime override or compile-time shared directory */
+    env_data = g_getenv ("CAJA_DATADIR");
+    path = g_build_filename (env_data && *env_data ? env_data : CAJA_DATADIR, partial_path, NULL);
     if (g_file_test (path, G_FILE_TEST_EXISTS))
     {
         return path;

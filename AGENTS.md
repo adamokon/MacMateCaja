@@ -19,3 +19,11 @@ limit. Never replace it with the much longer macOS per-user TMPDIR.
 Do not publish user profiles, bookmarks, credentials, technical caches, build
 outputs or old Git history. Preserve upstream notices and check license notes.
 Never run destructive reset/cleanup commands on a dirty worktree.
+
+The repository root is the canonical development tree. `.local/` contains private
+legacy copies/history and must never be staged, exported, or published. `dist/`,
+`prefix/`, `runtime/`, and `build/` are local generated artifacts, not source.
+Keep local compatibility symlinks until legacy absolute library paths are retired.
+Do not use `cua.getApp(appPath)` merely to attach to a synthetic process: it may
+launch an additional instance with the real user profile. Use isolated HOME,
+configuration and D-Bus for tests; terminate only the test's process group.

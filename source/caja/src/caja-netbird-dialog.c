@@ -126,8 +126,13 @@ refresh_peers (NetbirdDialog *d)
         gtk_label_set_text (GTK_LABEL (d->message), "Brak Python 3 — nie można odczytać listy NetBird.");
         return;
     }
-    d->process = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE | G_SUBPROCESS_FLAGS_STDERR_PIPE,
-                                  &error, python, CAJA_DATADIR "/netbird-peers.py", NULL);
+    {
+        const char *env_data = g_getenv ("CAJA_DATADIR");
+        char *script_path = g_build_filename (env_data && *env_data ? env_data : CAJA_DATADIR, "netbird-peers.py", NULL);
+        d->process = g_subprocess_new (G_SUBPROCESS_FLAGS_STDOUT_PIPE | G_SUBPROCESS_FLAGS_STDERR_PIPE,
+                                      &error, python, script_path, NULL);
+        g_free (script_path);
+    }
     g_free (python);
     if (!d->process) {
         gtk_label_set_text (GTK_LABEL (d->message), error->message);

@@ -2199,7 +2199,8 @@ load_custom_css (GtkCssProvider *provider,
                  guint priority)
 {
     GError *error = NULL;
-    gchar *path = g_build_filename (CAJA_DATADIR, filename, NULL);
+    const char *env_data = g_getenv ("CAJA_DATADIR");
+    gchar *path = g_build_filename (env_data && *env_data ? env_data : CAJA_DATADIR, filename, NULL);
 
     if (provider)
         g_object_ref (provider);
@@ -2230,10 +2231,11 @@ reload_theme_css (GtkSettings    *settings,
     gchar *theme_name;
     gchar *css_theme_name;
     gchar *path;
+    const char *env_data = g_getenv ("CAJA_DATADIR");
 
     g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
     css_theme_name = g_strconcat ("caja-desktop-", theme_name, ".css", NULL);
-    path = g_build_filename (CAJA_DATADIR, css_theme_name, NULL);
+    path = g_build_filename (env_data && *env_data ? env_data : CAJA_DATADIR, css_theme_name, NULL);
 
     if (g_file_test (path, G_FILE_TEST_EXISTS))
         load_custom_css (provider, css_theme_name, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -2250,6 +2252,8 @@ init_icons_and_styles (void)
 {
     GtkSettings *settings = gtk_settings_get_default ();
     GtkCssProvider *provider;
+    const char *env_data = g_getenv ("CAJA_DATADIR");
+    char *custom_icons;
 
 #ifdef GDK_WINDOWING_QUARTZ
     /*
@@ -2274,8 +2278,9 @@ init_icons_and_styles (void)
                            provider, (GClosureNotify) g_object_unref, 0);
 
     /* initialize search path for custom icons */
-    gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (),
-                       CAJA_DATADIR G_DIR_SEPARATOR_S "icons");
+    custom_icons = g_build_filename (env_data && *env_data ? env_data : CAJA_DATADIR, "icons", NULL);
+    gtk_icon_theme_append_search_path (gtk_icon_theme_get_default (), custom_icons);
+    g_free (custom_icons);
 }
 
 static void

@@ -327,7 +327,8 @@ caja_customization_data_destroy (CajaCustomizationData *data)
 static char *
 get_global_customization_path (const char *customization_name)
 {
-    return g_build_filename (CAJA_DATADIR,
+    const char *env_data = g_getenv ("CAJA_DATADIR");
+    return g_build_filename (env_data && *env_data ? env_data : CAJA_DATADIR,
                              customization_name,
                              NULL);
 }
@@ -457,7 +458,13 @@ load_name_map_hash_table (CajaCustomizationData *data)
     data->name_map_hash = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, g_free);
 
     /* load the browser.xml file */
-    if ((browser_data = xmlParseFile (CAJA_DATADIR "/browser.xml")) != NULL)
+    {
+        const char *env_data = g_getenv ("CAJA_DATADIR");
+        char *xml_path = g_build_filename (env_data && *env_data ? env_data : CAJA_DATADIR, "browser.xml", NULL);
+        browser_data = xmlParseFile (xml_path);
+        g_free (xml_path);
+    }
+    if (browser_data != NULL)
     {
         /* get the category node */
         category_node = eel_xml_get_root_child_by_name_and_property (browser_data,

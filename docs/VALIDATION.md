@@ -32,3 +32,29 @@ fixture, not a developer credential. Its SHA-256 is
 `283408c73ae8e3cb3d262585bdd12d09d5eef667a6e3d6604a906d73b16b9b80`,
 identical to the [GNOME GVfs upstream fixture](https://github.com/GNOME/gvfs/blob/master/test/files/ssh_host_rsa_key)
 verified on 2026-10-08. Never use this public test key for real authentication.
+
+## Installer integration — 2026-10-19
+
+The latest installer sources and Caja runtime-resource overrides are integrated
+into the repository root. Packaging no longer needs an external `project/`
+workspace or a developer-specific home path.
+
+- Configuration, synthetic launcher and export regression tests: 13/13 passed.
+- Existing local installer after relocating the project: 7/7 package tests passed.
+- A fresh package built from the consolidated runtime inputs: 202 Mach-O files;
+  deep/strict ad-hoc signature verification, unsigned PKG and ZIP creation passed.
+- Fresh output: 7/7 package tests passed, including Mach-O path checks, signatures,
+  plist, PKG expansion, relocation into two temporary directories (one with spaces),
+  synthetic GIO reads and isolated GUI startup/cleanup.
+- Shell syntax checks and the source-only export/privacy audit passed.
+
+The previously compiled source changes are included; this integration check did
+not repeat a full native dependency rebuild. No production remote locations,
+real user-file operations or system installation were part of these tests.
+The current tested binary target is Apple Silicon and macOS 26+; no Intel,
+older macOS or second physical machine validation is claimed.
+
+Installer source publication does not authorize a public binary release:
+complete corresponding sources and license material for bundled transitive
+dependencies must still be collected first. The local package uses an ad-hoc
+signature, not Apple Developer ID or notarization.
