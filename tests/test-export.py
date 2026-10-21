@@ -32,6 +32,7 @@ class ExportTest(unittest.TestCase):
                               capture_output=True, text=True, timeout=15)
 
     def test_assets_and_sources_unchanged(self):
+        (self.root / 'VERSION').write_text('1.28.1\n')
         data = b'\x89PNG\r\n\x1a\nsynthetic image\x00\xff'
         (self.root / 'assets/icon.png').write_bytes(data)
         (self.root / 'source/caja/test.c').write_text('/* synthetic source */\n')
@@ -41,6 +42,7 @@ class ExportTest(unittest.TestCase):
         self.assertEqual((self.dest / 'assets/icon.png').read_bytes(), data)
         self.assertTrue((self.dest / 'scripts/export-public.py').is_file())
         self.assertTrue((self.dest / 'SOURCE-MANIFEST.json').is_file())
+        self.assertEqual((self.dest / 'VERSION').read_text(), '1.28.1\n')
         self.assertFalse((self.dest / 'config/config.ini').exists())
 
     def test_excludes_generated_files(self):

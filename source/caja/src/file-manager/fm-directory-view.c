@@ -2812,7 +2812,7 @@ static gboolean
 ready_to_load (CajaFile *file)
 {
 	return caja_file_check_if_ready (file,
-					     CAJA_FILE_ATTRIBUTES_FOR_ICON);
+					     CAJA_FILE_ATTRIBUTES_FOR_DISPLAY);
 }
 
 static int
@@ -9300,6 +9300,11 @@ real_update_menus (FMDirectoryView *view)
 	gtk_action_set_sensitive (action, can_copy_files);
 	action = gtk_action_group_get_action (view->details->dir_action_group,
 					      "MoveToMenu");
+	gtk_action_set_label (action, can_copy_files && !can_delete_files
+		? _("M_ove to (not permitted)") : _("M_ove to"));
+	gtk_action_set_tooltip (action, can_copy_files && !can_delete_files
+		? _("Moving requires permission to remove the selected items from their parent folder. Copying does not.")
+		: _("Move the selected items to another folder"));
 	gtk_action_set_sensitive (action, can_delete_files);
 	G_GNUC_END_IGNORE_DEPRECATIONS;
 }

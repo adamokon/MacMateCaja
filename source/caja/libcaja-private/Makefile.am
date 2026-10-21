@@ -74,6 +74,7 @@ libcaja_private_la_SOURCES = \
 	caja-desktop-metadata.c \
 	caja-desktop-metadata.h \
 	caja-directory-async.c \
+	caja-deep-count-tracker.h \
 	caja-directory-background.c \
 	caja-directory-background.h \
 	caja-directory-notify.h \

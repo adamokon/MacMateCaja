@@ -50,11 +50,12 @@ class PackagingVerificationTest(unittest.TestCase):
         cls.workspace_root = Path(__file__).resolve().parents[1]
         cls.dist_dir = Path(os.environ.get("MACMATECAJA_TEST_DIST_DIR", str(cls.workspace_root / "dist"))).resolve()
         cls.app_path = cls.dist_dir / "MacMateCaja.app"
-        cls.pkg_path = cls.dist_dir / "MacMateCaja-1.28.0-arm64.pkg"
-        cls.zip_path = cls.dist_dir / "MacMateCaja-1.28.0-arm64.zip"
-
         if not cls.app_path.exists():
             raise unittest.SkipTest(f"App bundle not found at {cls.app_path}. Run build-package first.")
+        with (cls.app_path / "Contents/Info.plist").open("rb") as version_file:
+            cls.version = plistlib.load(version_file)["CFBundleShortVersionString"]
+        cls.pkg_path = cls.dist_dir / f"MacMateCaja-{cls.version}-arm64.pkg"
+        cls.zip_path = cls.dist_dir / f"MacMateCaja-{cls.version}-arm64.zip"
 
     def test_01_macho_dependencies_fully_resolved_and_relocatable(self):
         """
@@ -122,6 +123,8 @@ class PackagingVerificationTest(unittest.TestCase):
         self.assertEqual(data.get("CFBundlePackageType"), "APPL")
         self.assertEqual(data.get("CFBundleExecutable"), "MacMateCaja")
         self.assertEqual(data.get("LSMinimumSystemVersion"), "26.0")
+        self.assertRegex(data["CFBundleShortVersionString"], r"^\d+\.\d+\.\d+$")
+        self.assertEqual(data["CFBundleVersion"], data["CFBundleShortVersionString"])
 
     def test_04_pkg_inspection(self):
         """Verify that the PKG is an unsigned component targeting /Applications with no postinstall scripts."""

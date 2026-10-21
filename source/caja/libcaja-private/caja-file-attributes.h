@@ -44,4 +44,8 @@ typedef enum
     CAJA_FILE_ATTRIBUTE_FILESYSTEM_INFO = 1 << 10,
 } CajaFileAttributes;
 
+/* A usable file list must not wait for thumbnails or recursive statistics.
+ * Keep requesting those through monitors; update placeholder icons later. */
+#define CAJA_FILE_ATTRIBUTES_FOR_DISPLAY (CAJA_FILE_ATTRIBUTE_INFO | CAJA_FILE_ATTRIBUTE_LINK_INFO)
+
 #endif /* CAJA_FILE_ATTRIBUTES_H */

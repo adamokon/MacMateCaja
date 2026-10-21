@@ -6,6 +6,8 @@ MacMateCaja to natywny port menedżera plików MATE Caja dla systemu macOS, wyko
 
 ## 1. Wymagania systemowe
 
+Wersja portu macOS: **1.28.1**, oparta na silniku MATE Caja 1.28.0.
+
 - **Architektura**: Apple Silicon (arm64: M1, M2, M3, M4 lub nowszy).
 - **Minimalna wersja systemu**: macOS 26.0 lub nowszy (wynika z platformowych bibliotek Mach-O).
 - **Uprawnienia**: Do uruchomienia wystarcza zwykłe konto użytkownika. Instalator `.pkg` może poprosić o zatwierdzenie administratora przy zapisie do `/Applications`. ZIP można rozpakować do `~/Applications`. Nie trzeba wyłączać SIP.
@@ -17,13 +19,13 @@ MacMateCaja to natywny port menedżera plików MATE Caja dla systemu macOS, wyko
 Dostępne są dwie metody instalacji:
 
 ### Metoda A: Instalator pakietu `.pkg` (Zalecana)
-1. Pobierz plik `MacMateCaja-1.28.0-arm64.pkg`.
+1. Pobierz plik `MacMateCaja-1.28.1-arm64.pkg`.
 2. Uruchom instalator podwójnym kliknięciem.
 3. Pakiet jest standardowym instalatorem komponentowym, który automatycznie umieści aplikację w katalogu `/Applications/MacMateCaja.app`.
 4. Instalator nie wykonuje żadnych ukrytych skryptów `preinstall`/`postinstall`.
 
 ### Metoda B: Archiwum ZIP
-1. Pobierz plik `MacMateCaja-1.28.0-arm64.zip`.
+1. Pobierz plik `MacMateCaja-1.28.1-arm64.zip`.
 2. Rozpakuj archiwum w Finderze.
 3. Przeciągnij `MacMateCaja.app` do katalogu `/Applications`.
 
@@ -81,3 +83,16 @@ Zatwierdzaj tylko pakiet ze znanego źródła i zgodny z opublikowaną sumą SHA
 Aplikacja nie instaluje w systemie żadnych prywatnych konfiguracji dewelopera.
 - Domyślna lokalizacja startowa to katalog domowy lub Biurko użytkownika.
 - Użytkownik może zdefiniować własny plik konfiguracyjny INI (zgodnie ze specyfikacją w `CONFIGURATION.md`), wskazując własne zakładki, profile i preferencje.
+
+## 7. Copy działa, ale Move/F6 jest wyłączone
+
+Przenoszenie wymaga nie tylko odczytu pliku, lecz także prawa usunięcia go
+z katalogu źródłowego. Własność samego pliku lub podkatalogu nie wystarcza,
+jeżeli jego katalog nadrzędny należy do administratora i nie jest zapisywalny.
+W takim przypadku „Move to (not permitted)” jest poprawną blokadą uprawnień,
+nie oczekiwaniem na zakończenie obliczeń. Sprawdź uprawnienia katalogu nadrzędnego
+w Finderze lub przez `gio info`; nie próbuj automatycznie zmieniać właściciela
+całego dysku ani wykonywać masowego `chmod -R`.
+
+Obliczanie rozmiarów może obciążać procesor w tle. Miniatury nie powinny
+utrzymywać stanu ładowania całej listy — ich brak nie blokuje nawigacji.

@@ -58,3 +58,56 @@ Installer source publication does not authorize a public binary release:
 complete corresponding sources and license material for bundled transitive
 dependencies must still be collected first. The local package uses an ad-hoc
 signature, not Apple Developer ID or notarization.
+
+## Recursive sizing responsiveness — 2026-10-21
+
+A live hang sample identified the main thread spending most of its time in
+`deep_count_more_files_callback` / `deep_count_one`. Inode deduplication used
+a linear array search for every entry, resulting in quadratic work on large
+directory trees despite asynchronous GIO enumeration.
+
+The inode set now uses owned 64-bit hash keys, preserving hardlink accounting
+and missing/zero-inode behavior. Enumeration remains in batches of 100 at low
+priority. Progress notifications from batches and directory boundaries are
+throttled to 100ms; final results are always published.
+
+- Three production-helper regressions passed, including 500,000 distinct entries
+  in 0.019 seconds with 13 timer heartbeats delivered during the work.
+- Thirteen existing configuration/launcher/export tests passed.
+- Full Caja rebuild and staged installation succeeded; fresh standalone bundle
+  packaging, signature verification and all seven package tests passed.
+- Manual GUI test used only two directories and one newly created empty file
+  under a unique temporary root: F6 moved the file to the other pane, verified
+  on disk. The Move to submenu opened and displayed the other-pane F6 action.
+  No real user data was copied, moved, renamed or deleted by these tests.
+
+The updated application was installed locally. Its previous bundle was preserved
+for rollback. A stale local Dock entry was retargeted from an archived development
+bundle to the installed application; user profiles were not changed.
+
+### 1.28.1 follow-up
+
+A later report distinguished Copy working from Move being disabled. Read-only
+metadata queries confirmed that the source parent lacked write permission and
+its children reported `access::can-delete=FALSE`, even though the children were
+writable. No disk permissions were changed. A synthetic parent-permission test
+now reproduces that distinction using only a fresh temporary directory.
+
+File-list readiness no longer waits for thumbnail completion; monitors still
+request and publish thumbnails independently. Disabled Move to actions display
+an explicit not-permitted label and explain the source-removal requirement.
+
+- Five focused tracker/readiness/permission tests, four configuration tests,
+  four synthetic launcher tests and five export tests passed (18 total).
+- The full native dependency/Caja build passed.
+- Packaging from a disposable, clean Caja source copy passed. The developer
+  `config.status` SHA-256 was identical before and after packaging; its prefix
+  remained the private development runtime, not the neutral `/opt` prefix.
+- All seven tests of the freshly built 1.28.1 bundle/installer passed (25 tests
+  across the five suites). No tests changed real user-file permissions.
+- Scratch packaging sources were removed; both bundle version fields are the
+  numeric port version 1.28.1. The engine base remains upstream Caja 1.28.0.
+- Installed 1.28.1 passed six bundle tests under a sandbox denying the project,
+  legacy paths and Homebrew; the PKG test was correctly skipped because only
+  the application bundle is installed in Applications. The neutral-prefix
+  dependency resolver was also checked to prefer this run's staged library.

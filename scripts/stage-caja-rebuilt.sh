@@ -8,7 +8,6 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 WORKSPACE_ROOT="$PROJECT_ROOT"
 
-CAJA_SRC="$PROJECT_ROOT/source/caja"
 STAGED_DIR="$WORKSPACE_ROOT/build/staged_caja"
 TARGET_PREFIX="$PROJECT_ROOT/prefix/quartz"
 
@@ -19,6 +18,12 @@ if [ ! -f "$TARGET_PREFIX/lib/libmate-desktop-2.17.dylib" ] || [ ! -x "$PROJECT_
 fi
 
 mkdir -p "$STAGED_DIR"
+# Never reconfigure the development tree with /opt/MacMateCaja: an incremental
+# developer make install must not accidentally target the real system /opt.
+PACKAGE_WORK="$(mktemp -d "$WORKSPACE_ROOT/build/caja-package.XXXXXX")"
+trap 'find "$PACKAGE_WORK" -depth -delete' EXIT
+CAJA_SRC="$PACKAGE_WORK/source"
+python3 "$SCRIPT_DIR/copy-package-sources.py" "$CAJA_SRC"
 BREW_PREFIX="${MACMATECAJA_HOMEBREW_PREFIX:-$(brew --prefix)}"
 export PATH="$BREW_PREFIX/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export PKG_CONFIG_PATH="$PROJECT_ROOT/runtime/gvfs/lib/pkgconfig:$TARGET_PREFIX/lib/pkgconfig:$BREW_PREFIX/lib/pkgconfig:$BREW_PREFIX/share/pkgconfig"
@@ -28,10 +33,8 @@ export PKG_CONFIG_PATH="$PROJECT_ROOT/runtime/gvfs/lib/pkgconfig:$TARGET_PREFIX/
     --disable-icon-update --disable-gtk-doc --disable-introspection --disable-packagekit \
     --disable-xmp --disable-self-check --enable-quartz-browser-only
   make -j"${MACMATECAJA_BUILD_JOBS:-4}"
+  make install DESTDIR="$STAGED_DIR"
 )
-
-echo "Running make install with DESTDIR=$STAGED_DIR..."
-make -C "$CAJA_SRC" install DESTDIR="$STAGED_DIR"
 
 STAGED_PREFIX="$STAGED_DIR/opt/MacMateCaja"
 if [ ! -d "$STAGED_PREFIX" ]; then

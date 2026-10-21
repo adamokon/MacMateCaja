@@ -2,6 +2,9 @@
 
 This document describes the design, build steps, and relocation mechanics for the standalone Apple Silicon macOS package of MacMateCaja.
 
+The current port version is read from repository `VERSION` (1.28.1), independently
+of the upstream engine base. Both macOS bundle version fields are numeric.
+
 ---
 
 ## 1. Overview and Architecture
@@ -89,9 +92,11 @@ To guarantee that the application can be moved to arbitrary directories (includi
 
 Run these commands from the repository root, not an external `project/` wrapper.
 First build the private native dependencies with `bash scripts/build-native.sh`.
-The staging script then configures/rebuilds Caja with the neutral
+The staging script copies only clean Caja source inputs into a temporary
+repository-local build directory, then configures/rebuilds that copy with neutral
 `/opt/MacMateCaja` prefix, but installs it only under repository `build/` through
-`DESTDIR`; it does not install into the system `/opt` directory.
+`DESTDIR`; it does not install into the system `/opt` directory or reconfigure
+the main developer tree. Its temporary source/build copy is cleaned on exit.
 
 1. **Staged Caja Overlay** (preserves mate-desktop and schemas without touching `/opt`):
    ```bash
@@ -104,8 +109,8 @@ The staging script then configures/rebuilds Caja with the neutral
    ```
    Outputs:
    - `dist/MacMateCaja.app`
-   - `dist/MacMateCaja-1.28.0-arm64.pkg`
-   - `dist/MacMateCaja-1.28.0-arm64.zip`
+   - `dist/MacMateCaja-1.28.1-arm64.pkg`
+   - `dist/MacMateCaja-1.28.1-arm64.zip`
 
 3. **Run Verification and Relocation Test Suite**:
    ```bash

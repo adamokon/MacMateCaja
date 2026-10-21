@@ -25,6 +25,22 @@
 - Startup configuration is data-only INI; personal defaults never belong in
   public source. See CONFIGURATION.md for profiles and precedence.
 
+## Responsiveness and permissions (1.28.1)
+
+Recursive statistics use 64-bit inode hash keys and low-priority batches of 100
+entries. Intermediate results are published at most every 100ms; final results
+are always published. The file-list loading state requires basic/link metadata,
+not completed thumbnails or recursive counts. Preview icons update later.
+
+Copy and Move have different permission requirements. Move requires the ability
+to remove each selected item from its parent, even when the item itself is owned
+by the current user. A read-only parent can therefore permit Copy but disable
+Move/F6. The menu labels that state as not permitted; the application must not
+bypass OS permission checks or silently change disk ownership/ACLs.
+
+The macOS port version is stored in VERSION; its bundle uses numeric version
+metadata. The underlying engine is based on upstream MATE Caja 1.28.0.
+
 The existing features above were preserved during source cleanup; this release
 preparation validates the configuration/launcher and native build, not a full
 new GUI regression of every historical feature.

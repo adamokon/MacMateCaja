@@ -1,5 +1,9 @@
 # MacMateCaja
 
+Current macOS port version: **1.28.1** (see [changes](CHANGELOG.md)).
+The upstream engine remains based on MATE Caja 1.28.0; its `caja --version`
+reports the engine version, while the macOS bundle and installer use `VERSION`.
+
 A macOS port and enhanced software fork of [MATE Caja](https://github.com/mate-desktop/caja),
 the file manager of the [MATE Desktop environment](https://mate-desktop.org/)
 on Linux. This port is based on Caja 1.28.0 and runs natively through GTK 3 Quartz.
@@ -28,6 +32,8 @@ See [building](docs/BUILDING.md). Run `bash tests/run-config-tests.sh` to test
 configuration independently of the GUI. Run `python3 tests/test-launcher.py`
 to test the launcher with a synthetic runtime (no user file operations).
 Run `python3 tests/test-export.py` for export/privacy regressions.
+Run `bash tests/run-deep-count-tests.sh` for large-directory bookkeeping,
+main-loop responsiveness and non-blocking thumbnail-readiness regressions.
 
 ## Free macOS installer
 

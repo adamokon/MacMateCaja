@@ -31,6 +31,7 @@
 #include <eel/eel-glib-extensions.h>
 
 #include "caja-directory-notify.h"
+#include "caja-deep-count-tracker.h"
 #include "caja-directory-private.h"
 #include "caja-file-attributes.h"
 #include "caja-folder-summary.h"
@@ -148,7 +149,8 @@ struct DeepCountState
     GFileEnumerator *enumerator;
     GFile *deep_count_location;
     GList *deep_count_subdirectories;
-    GArray *seen_deep_count_inodes;
+    GHashTable *seen_deep_count_inodes;
+    gint64 last_progress_update;
     char *fs_id;
 };
 
@@ -2780,43 +2782,6 @@ directory_count_start (CajaDirectory *directory,
     g_object_unref (location);
 }
 
-static inline gboolean
-seen_inode (DeepCountState *state,
-            GFileInfo *info)
-{
-    guint64 inode, inode2;
-    guint i;
-
-    inode = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_UNIX_INODE);
-
-    if (inode != 0)
-    {
-        for (i = 0; i < state->seen_deep_count_inodes->len; i++)
-        {
-            inode2 = g_array_index (state->seen_deep_count_inodes, guint64, i);
-            if (inode == inode2)
-            {
-                return TRUE;
-            }
-        }
-    }
-
-    return FALSE;
-}
-
-static inline void
-mark_inode_as_seen (DeepCountState *state,
-                    GFileInfo *info)
-{
-    guint64 inode;
-
-    inode = g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_UNIX_INODE);
-    if (inode != 0)
-    {
-        g_array_append_val (state->seen_deep_count_inodes, inode);
-    }
-}
-
 static void
 deep_count_one (DeepCountState *state,
                 GFileInfo *info)
@@ -2824,11 +2789,8 @@ deep_count_one (DeepCountState *state,
     CajaFile *file;
     gboolean is_seen_inode;
 
-    is_seen_inode = seen_inode (state, info);
-    if (!is_seen_inode)
-    {
-        mark_inode_as_seen (state, info);
-    }
+    is_seen_inode = caja_deep_count_record_inode (state->seen_deep_count_inodes,
+        g_file_info_get_attribute_uint64 (info, G_FILE_ATTRIBUTE_UNIX_INODE));
 
     file = state->directory->details->deep_count_file;
 
@@ -2898,7 +2860,7 @@ deep_count_state_free (DeepCountState *state)
         g_object_unref (state->deep_count_location);
     }
     g_list_free_full (state->deep_count_subdirectories, g_object_unref);
-    g_array_free (state->seen_deep_count_inodes, TRUE);
+    g_hash_table_destroy (state->seen_deep_count_inodes);
     g_free (state->fs_id);
     g_free (state);
 }
@@ -2938,7 +2900,13 @@ deep_count_next_dir (DeepCountState *state)
         done = TRUE;
     }
 
-    caja_file_updated_deep_count_in_progress (file);
+    /* Final results must always be published; intermediate directory boundaries
+     * share the same throttle as enumeration batches. Do not access freed state. */
+    if (done || caja_deep_count_progress_due (&state->last_progress_update,
+                                             g_get_monotonic_time ()))
+    {
+        caja_file_updated_deep_count_in_progress (file);
+    }
 
     if (done)
     {
@@ -3000,7 +2968,9 @@ deep_count_more_files_callback (GObject *source_object,
                                             state);
     }
 
-    if (files != NULL)
+    if (files != NULL &&
+        caja_deep_count_progress_due (&state->last_progress_update,
+                                      g_get_monotonic_time ()))
     {
         /* Publish one incremental result per low-priority GIO batch. */
         caja_file_updated_deep_count_in_progress (directory->details->deep_count_file);
@@ -3169,7 +3139,8 @@ deep_count_start (CajaDirectory *directory,
     state = g_new0 (DeepCountState, 1);
     state->directory = directory;
     state->cancellable = g_cancellable_new ();
-    state->seen_deep_count_inodes = g_array_new (FALSE, TRUE, sizeof (guint64));
+    state->seen_deep_count_inodes = caja_deep_count_inode_set_new ();
+    state->last_progress_update = g_get_monotonic_time ();
     state->fs_id = NULL;
 
     directory->details->deep_count_in_progress = state;

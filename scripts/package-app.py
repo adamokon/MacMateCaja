@@ -259,9 +259,9 @@ INFO_PLIST_CONTENT = """<?xml version="1.0" encoding="UTF-8"?>
   <key>CFBundlePackageType</key>
   <string>APPL</string>
   <key>CFBundleShortVersionString</key>
-  <string>1.28.0</string>
+  <string>@MACMATECAJA_VERSION@</string>
   <key>CFBundleVersion</key>
-  <string>1.28.0-macos-arm64-1</string>
+  <string>@MACMATECAJA_VERSION@</string>
   <key>LSMinimumSystemVersion</key>
   <string>26.0</string>
   <key>NSHighResolutionCapable</key>
@@ -278,6 +278,12 @@ def locate_dependency(dep, macho_path, frameworks_dir, quartz_prefix, gvfs_prefi
     """
     dep_name = os.path.basename(dep)
 
+    # The neutral prefix belongs to this staging run, never an unrelated
+    # installation that happens to exist under the real system /opt.
+    if staged_prefix and dep.startswith("/opt/MacMateCaja/"):
+        candidate = staged_prefix / dep[len("/opt/MacMateCaja/"):]
+        return candidate.resolve() if candidate.exists() else None
+
     # Rebase legacy build inputs by their runtime suffix, never a developer's home.
     for marker, prefix in (("/prefix/quartz/", quartz_prefix), ("/runtime/gvfs/", gvfs_prefix)):
         if marker in dep:
@@ -289,13 +295,6 @@ def locate_dependency(dep, macho_path, frameworks_dir, quartz_prefix, gvfs_prefi
     dep_p = Path(dep)
     if dep_p.is_absolute() and dep_p.exists():
         return dep_p.resolve()
-
-    # 2. Check staged prefix (rebuilt Caja)
-    if staged_prefix and dep.startswith("/opt/MacMateCaja"):
-        sub = dep[len("/opt/MacMateCaja"):].lstrip('/')
-        cand = staged_prefix / sub
-        if cand.exists():
-            return cand.resolve()
 
     # 4. Check Homebrew path mapping
     if dep.startswith("/opt/homebrew/"):
@@ -441,7 +440,11 @@ def build_app(quartz_prefix, gvfs_prefix, brew_prefix, dist_dir, workspace_root,
 
     # 1. Info.plist & PkgInfo
     print("Writing Info.plist and PkgInfo...")
-    (contents / "Info.plist").write_text(INFO_PLIST_CONTENT, encoding="utf-8")
+    release_version = (workspace_root / "VERSION").read_text(encoding="utf-8").strip()
+    if not re.fullmatch(r"\d+\.\d+\.\d+", release_version):
+        raise RuntimeError("VERSION must contain a numeric major.minor.patch version")
+    (contents / "Info.plist").write_text(
+        INFO_PLIST_CONTENT.replace("@MACMATECAJA_VERSION@", release_version), encoding="utf-8")
     (contents / "PkgInfo").write_text("APPL????", encoding="utf-8")
 
     # 2. Icon & Launcher
@@ -889,7 +892,9 @@ Please refer to AUTHORS-caja.txt, AUTHORS-mate-desktop.txt, AUTHORS.md, and LICE
     return app_dir
 
 
-def build_pkg_and_zip(app_dir, dist_dir, version="1.28.0"):
+def build_pkg_and_zip(app_dir, dist_dir):
+    with (app_dir / "Contents/Info.plist").open("rb") as version_file:
+        version = plistlib.load(version_file)["CFBundleShortVersionString"]
     pkg_path = dist_dir / f"MacMateCaja-{version}-arm64.pkg"
     zip_path = dist_dir / f"MacMateCaja-{version}-arm64.zip"
 

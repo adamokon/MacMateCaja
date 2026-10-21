@@ -70,6 +70,10 @@ def main():
             if path.is_file() and selected(path, relative):
                 mapping.append((path, relative))
     mapping.append((root / 'config/config.example.ini', Path('config/config.example.ini')))
+    # Release metadata belongs at the root in both legacy and current layouts.
+    for name in ('VERSION', 'CHANGELOG.md'):
+        if (root / name).is_file():
+            mapping.append((root / name, Path(name)))
     if (root / 'public-docs').is_dir():
         for path in sorted((root / 'public-docs').rglob('*')):
             if path.is_file():

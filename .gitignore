@@ -25,3 +25,4 @@ profiles/
 *.mo
 *.pyc
 __pycache__/
+source/caja/mate-submodules/Makefile
